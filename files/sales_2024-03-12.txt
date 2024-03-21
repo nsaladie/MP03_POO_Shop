@@ -1,0 +1,6 @@
+1;Client=FE;Date=12-03-2024 13:28:16;
+1;Products=Fresa,10.0€;
+1;Amount=10.4;
+2;Client=ESSS;Date=12-03-2024 13:28:30;
+2;Products=Pera,40.0€;
+2;Amount=41.6;
