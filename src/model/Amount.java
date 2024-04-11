@@ -26,7 +26,7 @@ public class Amount {
 		return " Precio : " + value + currency;
 	}
 
-	public String priceExportProduct() {
+	public String amountSale() {
 		return value + currency;
 	}
 
