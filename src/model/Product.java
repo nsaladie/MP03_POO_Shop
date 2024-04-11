@@ -28,7 +28,7 @@ public class Product {
 	}
 
 	public String listProduct() {
-		return name + "," + publicPrice.priceExportProduct() + ";";
+		return name + "," + publicPrice.amountSale() + ";";
 	}
 
 	public int getId() {
