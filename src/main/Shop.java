@@ -1,15 +1,11 @@
 package main;
 
 import model.Amount;
+import model.Employee;
 import model.Product;
 import model.Sale;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -29,7 +25,10 @@ public class Shop {
 
 	public static void main(String[] args) {
 		Shop shop = new Shop();
+		// Load initial inventory
 		shop.loadInventory();
+		// Login for the employer
+		shop.initSession();
 
 		Scanner scanner = new Scanner(System.in);
 		int opcion = 0;
@@ -100,6 +99,38 @@ public class Shop {
 				break;
 			}
 		} while (!exit);
+	}
+
+	/*
+	 * Login the session of the employee
+	 */
+	public void initSession() {
+		Scanner scanner = new Scanner(System.in);
+		Employee worker = new Employee();
+		boolean login = false;
+
+		do {
+			System.out.print("Identificacion de usuario: ");
+			while (!scanner.hasNextInt()) {
+				System.err.println("Has de introducir solo caracteres numericos");
+				System.out.print("Identificacion de usuario: ");
+				scanner.next();
+			}
+			int user = scanner.nextInt();
+			System.out.print("Contraseña del usuario: ");
+			String password = scanner.next();
+			// Save the result of the method in the variable login
+			login = worker.login(user, password);
+			// If login is false, report to the user that identification employee or password are incorrect
+			if (!login) {
+				System.err.println("Los datos de usuario o contraseña son incorrectos.");
+				System.err.println("Por favor, reintroduzca los datos correctos.");
+			}
+		} while (!login);
+
+		if (login) {
+			System.out.println("Login correcto.");
+		}
 	}
 
 	/**
