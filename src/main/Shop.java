@@ -1,7 +1,9 @@
 package main;
 
 import model.Amount;
+import model.Client;
 import model.Employee;
+import model.PremiumClient;
 import model.Product;
 import model.Sale;
 
@@ -121,7 +123,8 @@ public class Shop {
 			String password = scanner.next();
 			// Save the result of the method in the variable login
 			login = worker.login(user, password);
-			// If login is false, report to the user that identification employee or password are incorrect
+			// If login is false, report to the user that identification employee or
+			// password are incorrect
 			if (!login) {
 				System.err.println("Los datos de usuario o contraseña son incorrectos.");
 				System.err.println("Por favor, reintroduzca los datos correctos.");
@@ -302,8 +305,8 @@ public class Shop {
 	 * make a sale of products to a client
 	 */
 	public void sale() {
-		// ask for client name
 		Scanner sc = new Scanner(System.in);
+		// ask for client name
 		System.out.println("Realizar venta, escribir nombre cliente");
 		String client = sc.nextLine();
 		int count = 0;
@@ -314,6 +317,8 @@ public class Shop {
 		double totalAmount = 0.0;
 
 		String name = "";
+		// Call the class Client
+		Client clientSale = new Client(client);
 
 		while (!name.equals("0")) { // Check index and limit the loop to 10 products
 			// Shows the list of products that are in stock.
@@ -361,7 +366,16 @@ public class Shop {
 			LocalDateTime date = LocalDateTime.now();
 			// Save in the sale, the name of clients, products and total price.
 			sales.add(new Sale(client.trim(), saleProducts, totalAmount, date));
-			System.out.println("Venta realizada con éxito, total: " + totalAmount + "€");
+
+			Amount totalSale = new Amount(totalAmount);
+			System.out.println("Venta realizada con éxito, total: " + totalSale.amountSale());
+
+			// If the total of the amount of the sale exceeds 50
+			if (!clientSale.pay(totalSale)) {
+				double difference = clientSale.getAmount().getValue() - totalAmount;
+				Amount owe = new Amount(difference);
+				System.err.println("Cliente debe: " + owe.amountSale());
+			}
 		} else {
 			System.out.println("El cliente " + client + " no ha comprado ningún producto");
 		}
@@ -420,7 +434,7 @@ public class Shop {
 				String id = String.valueOf(position);
 				String division = ";";
 				// Data of the client of the sale
-				String client = "Client=" + sale.getClient().toUpperCase();
+				String client = "Client=" + sale.getClient();
 				String dateSale = "Date=" + sale.getDateSale();
 
 				// List of products in the sale
