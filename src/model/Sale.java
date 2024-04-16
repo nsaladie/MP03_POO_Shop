@@ -5,24 +5,24 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Sale {
-	private String client;
+	private Client client;
 	private ArrayList<Product> products;
 	private Amount amount;
 	private LocalDateTime dateSale;
 
 	public Sale(String client, ArrayList<Product> products, double amount, LocalDateTime date) {
 		super();
-		this.client = client;
+		this.client = new Client(client);
 		this.products = products;
 		this.amount = new Amount(amount);
 		this.dateSale = date;
 	}
 
-	public String getClient() {
+	public Client getClient() {
 		return client;
 	}
 
-	public void setClient(String client) {
+	public void setClient(Client client) {
 		this.client = client;
 	}
 
@@ -58,7 +58,7 @@ public class Sale {
 
 	@Override
 	public String toString() {
-		return "Ventas [Cliente " + client.toUpperCase() + ", Productos : " + products.toString() + "," + amount
+		return "Ventas [Cliente " + client + ", Productos : " + products.toString() + "," + amount
 				+ ", Fecha Venta : " + this.getDateSale() + "]";
 	}
 
