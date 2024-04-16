@@ -5,7 +5,6 @@ import main.Payable;
 public class Client extends Person implements Payable {
 	final private int MEMBER_ID = 456;
 	final private double BALANCE = 50.00;
-
 	private int member_id = MEMBER_ID;
 	private Amount amount = new Amount(BALANCE);
 
