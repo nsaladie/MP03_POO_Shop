@@ -6,7 +6,7 @@ public class Employee extends Person implements Logable {
 	// Constants
 	final private int EMPLOYEEDID = 123;
 	final private String PASSWORD = "test";
-	
+
 	private int emplyeeId = EMPLOYEEDID;
 
 	public int getEmplyeeId() {
@@ -32,5 +32,4 @@ public class Employee extends Person implements Logable {
 		}
 		return false;
 	}
-
 }

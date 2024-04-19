@@ -58,8 +58,7 @@ public class Sale {
 
 	@Override
 	public String toString() {
-		return "Ventas [Cliente " + client + ", Productos : " + products.toString() + "," + amount
-				+ ", Fecha Venta : " + this.getDateSale() + "]";
+		return "Ventas [Cliente " + client + ", Productos : " + products.toString() + "," + amount + ", Fecha Venta : "
+				+ this.getDateSale() + "]";
 	}
-
 }

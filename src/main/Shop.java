@@ -1,11 +1,6 @@
 package main;
 
-import model.Amount;
-import model.Client;
-import model.Employee;
-import model.PremiumClient;
-import model.Product;
-import model.Sale;
+import model.*;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -301,10 +296,40 @@ public class Shop {
 		}
 	}
 
+	/*
+	 * Get if the client is premium
+	 */
+	public boolean isPremium() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("¿El cliente es premium? (Si/No)");
+		String answer = sc.next().toLowerCase();
+		boolean validInput = false;
+
+		// Loop that tests the if-response with si or no, if not the program ask again
+		// the answer
+		do {
+			if (answer.equals("si") || answer.equals("no")) {
+				validInput = true;
+			} else {
+				System.out.println("Por favor, responde con 'Si' o 'No'.");
+				answer = sc.next().toLowerCase();
+			}
+		} while (!validInput);
+
+		if (answer.equals("si")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	/**
 	 * make a sale of products to a client
 	 */
 	public void sale() {
+		// Save in the variable if the user is premium or not
+		boolean premiumClient = isPremium();
+
 		Scanner sc = new Scanner(System.in);
 		// ask for client name
 		System.out.println("Realizar venta, escribir nombre cliente");
@@ -328,7 +353,7 @@ public class Shop {
 				}
 			}
 
-			System.out.println("Introduce el nombre del producto, escribir 0 para terminar:");
+			System.out.println("\nIntroduce el nombre del producto, escribir 0 para terminar:");
 			name = sc.nextLine();
 
 			if (name.equals("0")) {
@@ -347,13 +372,13 @@ public class Shop {
 					product.setAvailable(false);
 				}
 				saleProducts.add(product);
-				System.out.println("Producto añadido con éxito");
+				System.out.println("\nProducto añadido con éxito");
 				// Variable that validates if at least one product has been purchased
 				count++;
 			}
 
 			if (!productAvailable) {
-				System.out.println("Producto no encontrado o sin stock");
+				System.out.println("\nProducto no encontrado o sin stock");
 			}
 		}
 		// If they have purchased at least one product
@@ -368,8 +393,16 @@ public class Shop {
 			sales.add(new Sale(client.trim(), saleProducts, totalAmount, date));
 
 			Amount totalSale = new Amount(totalAmount);
-			System.out.println("Venta realizada con éxito, total: " + totalSale.amountSale());
+			System.out.println("\nVenta realizada con éxito, total: " + totalSale.amountSale());
 
+			// If the client is premium
+			if (premiumClient) {
+				// Create a newObject premium of the class PremiumClient
+				PremiumClient premium = new PremiumClient(client);
+				// Call the method addPoints, we pass the param totalSale.
+				premium.addPoints(totalSale);
+				System.out.println(premium);
+			}
 			// If the total of the amount of the sale exceeds 50
 			if (!clientSale.pay(totalSale)) {
 				double difference = clientSale.getAmount().getValue() - totalAmount;
@@ -391,6 +424,7 @@ public class Shop {
 		int count = 0;
 
 		for (Sale sale : sales) {
+			int total = 0;
 			if (sale != null) {
 				System.out.println(sale);
 				// Save the date with the correct format in the variable
