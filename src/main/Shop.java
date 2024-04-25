@@ -1,6 +1,7 @@
 package main;
 
 import model.*;
+import view.LoginView;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -102,33 +103,8 @@ public class Shop {
 	 * Login the session of the employee
 	 */
 	public void initSession() {
-		Scanner scanner = new Scanner(System.in);
-		Employee worker = new Employee();
-		boolean login = false;
-
-		do {
-			System.out.print("Identificacion de usuario: ");
-			while (!scanner.hasNextInt()) {
-				System.err.println("Has de introducir solo caracteres numericos");
-				System.out.print("Identificacion de usuario: ");
-				scanner.next();
-			}
-			int user = scanner.nextInt();
-			System.out.print("Contraseña del usuario: ");
-			String password = scanner.next();
-			// Save the result of the method in the variable login
-			login = worker.login(user, password);
-			// If login is false, report to the user that identification employee or
-			// password are incorrect
-			if (!login) {
-				System.err.println("Los datos de usuario o contraseña son incorrectos.");
-				System.err.println("Por favor, reintroduzca los datos correctos.");
-			}
-		} while (!login);
-
-		if (login) {
-			System.out.println("Login correcto.");
-		}
+		LoginView login = new LoginView();
+		login.setVisible(true);
 	}
 
 	/**
