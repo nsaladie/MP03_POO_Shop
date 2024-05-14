@@ -100,7 +100,7 @@ public class LoginView extends JFrame implements ActionListener {
 
 	}
 
-	private void initialSesion() throws LimitLoginException {
+	private void initialSesion() {
 		// Create a new instance of the Employee class
 		Employee worker = new Employee();
 		boolean isLogin = false;
@@ -120,30 +120,37 @@ public class LoginView extends JFrame implements ActionListener {
 			return;
 		}
 
-		if (loginAttempts < MAX_LOGIN_ATTEMPTS) {
-			if (isLogin) {
-				// Create a new object of the class ShopView
-				ShopView shopView = new ShopView();
-				// Put visible the view of ShopView
-				shopView.setVisible(true);
-				// Restore keyboard focus for the shop window
-				shopView.requestFocus();
-				// Close the view of LoginView
-				dispose();
+		try {
+			if (loginAttempts < MAX_LOGIN_ATTEMPTS) {
+				if (isLogin) {
+					// Create a new object of the class ShopView
+					ShopView shopView = new ShopView();
+					// Put visible the view of ShopView
+					shopView.setVisible(true);
+					// Restore keyboard focus for the shop window
+					shopView.requestFocus();
+					// Close the view of LoginView
+					dispose();
 
-			} else {
-				loginAttempts++;
-				// Report to the user that the credential are incorrect
-				JOptionPane.showMessageDialog(this, "Incorrect  UserId or password", "ERROR: Login",
-						JOptionPane.ERROR_MESSAGE);
-				resetFild();
-
+				} else {
+					loginAttempts++;
+					int attemptsLeft = MAX_LOGIN_ATTEMPTS - loginAttempts;
+					if (attemptsLeft > 0) {
+						// Report to the user how many attempts are left
+						JOptionPane.showMessageDialog(this,
+								"Incorrect UserId or password. " + attemptsLeft + " attempts left.", "Fail Login",
+								JOptionPane.ERROR_MESSAGE);
+						resetFild();
+					} else {
+						throw new LimitLoginException();
+					}
+				}
 			}
 
-		} else {
-			throw new LimitLoginException("Maximum number of login attempts reached. The application will close");
+		} catch (LimitLoginException maxAttempts) {
+			JOptionPane.showMessageDialog(this, maxAttempts.getMessage(), "ERROR: Login", JOptionPane.ERROR_MESSAGE);
+			dispose();
 		}
-
 	}
 
 	public void resetFild() {
@@ -155,13 +162,7 @@ public class LoginView extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnLogin) {
-			try {
-				initialSesion();
-			} catch (LimitLoginException error) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(this, error, "Fail Login", JOptionPane.ERROR_MESSAGE);
-				dispose();
-			}
+			initialSesion();
 		}
 
 		if (e.getSource() == btnReset) {
