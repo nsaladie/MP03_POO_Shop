@@ -52,8 +52,10 @@ public class CashView extends JDialog {
 			panel.add(lblImage);
 
 			cash = new JTextField();
+			// Put the label attribute to false, so that the text cannot be edited
 			cash.setEditable(false);
 			cash.setHorizontalAlignment(SwingConstants.CENTER);
+			// In the label cash put the return of the method getCash of the class Shop
 			cash.setText(shop.getCash());
 			cash.setFont(new Font("SansSerif", Font.PLAIN, 20));
 			cash.setBounds(64, 211, 133, 26);
