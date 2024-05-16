@@ -71,11 +71,12 @@ public class InventoryView extends JDialog implements ActionListener {
 		lblNewLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
 		lblNewLabel.setBounds(0, 10, 176, 30);
 		panel.add(lblNewLabel);
-		
-		JButton btnNewButton = new JButton("Back");
-		btnNewButton.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnNewButton.setBounds(212, 380, 91, 31);
-		contentPanel.add(btnNewButton);
+
+		backButton = new JButton("Back");
+		backButton.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		backButton.setBounds(212, 380, 91, 31);
+		backButton.addActionListener(this);
+		contentPanel.add(backButton);
 
 	}
 
