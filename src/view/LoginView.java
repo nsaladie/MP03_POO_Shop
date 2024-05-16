@@ -1,6 +1,7 @@
 package view;
 
 import exception.LimitLoginException;
+import util.Constants;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -17,7 +18,6 @@ public class LoginView extends JFrame implements ActionListener {
 	private JButton btnLogin;
 	private JButton btnReset;
 	private int loginAttempts = 0;
-	private static final int MAX_LOGIN_ATTEMPTS = 3;
 	private JLabel lblSymbol;
 	private JLabel lblSymbol2;
 
@@ -100,14 +100,14 @@ public class LoginView extends JFrame implements ActionListener {
 		btnReset.setBounds(201, 329, 91, 31);
 		btnReset.addActionListener(this);
 		panel.add(btnReset);
-		
+
 		lblSymbol = new JLabel("*");
 		lblSymbol.setForeground(Color.RED);
 		lblSymbol.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		lblSymbol.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSymbol.setBounds(139, 124, 21, 26);
 		panel.add(lblSymbol);
-		
+
 		lblSymbol2 = new JLabel("*");
 		lblSymbol2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSymbol2.setForeground(Color.RED);
@@ -126,24 +126,17 @@ public class LoginView extends JFrame implements ActionListener {
 		String identificationUser = userID.getText().trim();
 		String password = String.valueOf(passwordField.getPassword()).trim();
 
-		if(identificationUser.isEmpty() || password.isEmpty()) {
-			JOptionPane.showMessageDialog(this, "The userID or password can't be null", "Invalid Type: NULL", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		
-		// Check if the user entered only numeric characters in the UserID field
-		if (isNumeric(identificationUser)) {
-			int user = Integer.parseInt(identificationUser);
-			isLogin = worker.login(user, password);
-
-		} else {
-			JOptionPane.showMessageDialog(this, "Invalid UserId format", "Incorrect Type", JOptionPane.ERROR_MESSAGE);
-			// If the user use enter invalid user, exit the method
+		if (identificationUser.isEmpty() || password.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "The userID or password can't be null", "Invalid Type: NULL",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
 		try {
-			if (loginAttempts < MAX_LOGIN_ATTEMPTS) {
+			int user = Integer.parseInt(identificationUser);
+			isLogin = worker.login(user, password);
+
+			if (loginAttempts < Constants.MAX_LOGIN_ATTEMPTS) {
 				if (isLogin) {
 					// Create a new object of the class ShopView
 					ShopView shopView = new ShopView();
@@ -158,22 +151,22 @@ public class LoginView extends JFrame implements ActionListener {
 
 				} else {
 					loginAttempts++;
-					int attemptsLeft = MAX_LOGIN_ATTEMPTS - loginAttempts;
-					if (attemptsLeft > 0) {
-						// Report to the user how many attempts are left
-						JOptionPane.showMessageDialog(this,
-								"Incorrect UserId or password. " + attemptsLeft + " attempts left.", "Fail Login",
-								JOptionPane.ERROR_MESSAGE);
-						resetFild();
-					} else {
-						throw new LimitLoginException();
-					}
+					// Report to the user how many attempts are left
+					JOptionPane.showMessageDialog(this, "Incorrect Login. " + loginAttempts + "/"
+							+ Constants.MAX_LOGIN_ATTEMPTS + " attempts left.", "Fail Login",
+							JOptionPane.ERROR_MESSAGE);
+					resetFild();
 				}
+			} else {
+				// If the employee has passed the 3 attempts, an exception is triggered.
+				throw new LimitLoginException();
 			}
 
 		} catch (LimitLoginException maxAttempts) {
 			JOptionPane.showMessageDialog(this, maxAttempts.getMessage(), "ERROR: Login", JOptionPane.ERROR_MESSAGE);
 			dispose();
+		} catch (NumberFormatException number) {
+			JOptionPane.showMessageDialog(this, "Invalid UserId format", "Incorrect Type", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -192,9 +185,5 @@ public class LoginView extends JFrame implements ActionListener {
 		if (e.getSource() == btnReset) {
 			resetFild();
 		}
-	}
-
-	public boolean isNumeric(String employeeId) {
-		return employeeId.matches("[0-9]+");
 	}
 }
