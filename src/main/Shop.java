@@ -546,6 +546,10 @@ public class Shop {
 	public void removeProduct(Product product) {
 		inventory.remove(product);
 	}
+	
+	public ArrayList<Product> getInventory() {
+		return inventory;
+	}
 
 	/**
 	 * find product by name
