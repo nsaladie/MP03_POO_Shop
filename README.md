@@ -28,7 +28,7 @@ We start this exercise from this link: https://github.com/Stucom-Pelai/DAM1_M03_
 1) Create a LoginView
    - Design a user interface for employees to log in to the application securely.
 3) Create a ShopView
-   - Develop an interface presenting a menu with options to access different parts of the application, such as sales registration, product management, and inventory.
+   - Develop an interface presenting a menu with options to access different parts of the application, such as product management, and inventory.
 4) Create a CashView
    - Design a window displaying the total cash available in the store.
 5) Create a ProductView
