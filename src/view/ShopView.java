@@ -157,41 +157,53 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		lblImageShop.setIcon(new ImageIcon(ShopView.class.getResource("/resorce/grow-shop.png")));
 		lblImageShop.setBounds(296, 91, 271, 256);
 		panel.add(lblImageShop);
-		
+
 	}
 
 	private void openCashView(int option) {
+		// Call to the CashView and pass the parameters of shop and the option
 		CashView cash = new CashView(shop, option);
 		cash.setLocation(getX() + getWidth() / 2, getY() + 70);
+		// Put visible the CashView
 		cash.setVisible(true);
 	}
 
 	private void openProductView(int option) {
+		// Call the view of ProductView, pass the parameters of shop and the option of the menu (add, update, delete)
 		ProductView view = new ProductView(shop, option);
 		view.setLocation(getX() + getWidth() / 2, getY() + 50);
+		// Put visible the ProductView
 		view.setVisible(true);
 	}
-	
-	private void openInenvoryView(int option) {
+
+	private void opneInventoryView(int option) {
+		// Call the InventoryView and pass the parameter of the shop
 		InventoryView view = new InventoryView(shop);
 		view.setLocation(getX() + getWidth() / 2, getY() + 50);
+		// Set visible the view of InventoryView
 		view.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
+		// If the user clicks on the btnCashCount button, call the openCashView method with Constants.SHOW_CASH parameter
 		if (e.getSource() == btnCashCount) {
 			openCashView(Constants.SHOW_CASH);
 		}
+		// If the user clicks on the btnAddProduct button, call the openProductView method with Constants.ADD_PRODUCT parameter
 		if (e.getSource() == btnAddProduct) {
 			openProductView(Constants.ADD_PRODUCT);
 		}
+		// If the user clicks on the btnAddStock button, call the openProductView method with Constants.UPDATE_STOCK parameter
 		if (e.getSource() == btnAddStock) {
 			openProductView(Constants.UPDATE_STOCK);
 		}
+		// If the user clicks on the btnShowInventory button, call the opneInventoryView method with Constants.SHOW_INVENTORY parameter
 		if (e.getSource() == btnShowInventory) {
-			openInenvoryView(Constants.SHOW_INVENTORY);
+			opneInventoryView(Constants.SHOW_INVENTORY);
 		}
+		// If the user clicks on the btnDeleteProduct button, call the openProductView method with Constants.DELETE_PRODUCT parameter
 		if (e.getSource() == btnDeleteProduct) {
 			openProductView(Constants.DELETE_PRODUCT);
 		}
@@ -207,6 +219,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
 
+		// Switch that calls the appropriate method depending on the key pressed by the user
 		switch (key) {
 		case KeyEvent.VK_1:
 			openCashView(Constants.SHOW_CASH);
@@ -218,7 +231,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			openProductView(Constants.UPDATE_STOCK);
 			break;
 		case KeyEvent.VK_5:
-			openInenvoryView(Constants.SHOW_INVENTORY);
+			opneInventoryView(Constants.SHOW_INVENTORY);
 			break;
 		case KeyEvent.VK_9:
 			openProductView(Constants.DELETE_PRODUCT);
