@@ -7,7 +7,6 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 public class ProductView extends JDialog implements ActionListener {
 
@@ -21,6 +20,8 @@ public class ProductView extends JDialog implements ActionListener {
 	private JButton btnOk;
 	private int option;
 	private Shop shop;
+	private JLabel lblSymbol_1;
+	private JLabel lblSymbol_2;
 
 	/**
 	 * Launch the application.
@@ -75,9 +76,10 @@ public class ProductView extends JDialog implements ActionListener {
 		lblProduct.setBounds(0, 10, 331, 31);
 		panel.add(lblProduct);
 
-		JLabel lblNameProduct = new JLabel("Name Product:");
+		JLabel lblNameProduct = new JLabel("Product Name");
+		lblNameProduct.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNameProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblNameProduct.setBounds(21, 100, 135, 30);
+		lblNameProduct.setBounds(21, 100, 130, 30);
 		panel.add(lblNameProduct);
 
 		nameProduct = new JTextField();
@@ -86,9 +88,10 @@ public class ProductView extends JDialog implements ActionListener {
 		panel.add(nameProduct);
 		nameProduct.setColumns(10);
 
-		JLabel lblStockProduct = new JLabel("Stock Product:");
+		JLabel lblStockProduct = new JLabel("Product Stock");
+		lblStockProduct.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStockProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblStockProduct.setBounds(21, 155, 135, 30);
+		lblStockProduct.setBounds(21, 155, 130, 30);
 		panel.add(lblStockProduct);
 
 		stockProduct = new JTextField();
@@ -97,9 +100,10 @@ public class ProductView extends JDialog implements ActionListener {
 		stockProduct.setBounds(165, 155, 144, 30);
 		panel.add(stockProduct);
 
-		JLabel lblPriceProduct = new JLabel("Price Product:");
+		JLabel lblPriceProduct = new JLabel("Product Price");
+		lblPriceProduct.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPriceProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblPriceProduct.setBounds(21, 208, 135, 30);
+		lblPriceProduct.setBounds(21, 208, 130, 30);
 		panel.add(lblPriceProduct);
 
 		priceProduct = new JTextField();
@@ -120,26 +124,59 @@ public class ProductView extends JDialog implements ActionListener {
 		btnBack.addActionListener(this);
 		panel.add(btnBack);
 
+		JLabel lblSymbol = new JLabel("*");
+		lblSymbol.setForeground(Color.RED);
+		lblSymbol.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSymbol.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		lblSymbol.setBounds(143, 105, 22, 21);
+		panel.add(lblSymbol);
+
+		lblSymbol_1 = new JLabel("*");
+		lblSymbol_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSymbol_1.setForeground(Color.RED);
+		lblSymbol_1.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		lblSymbol_1.setBounds(143, 160, 22, 21);
+		panel.add(lblSymbol_1);
+
+		lblSymbol_2 = new JLabel("*");
+		lblSymbol_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblSymbol_2.setForeground(Color.RED);
+		lblSymbol_2.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		lblSymbol_2.setBounds(143, 213, 22, 21);
+		panel.add(lblSymbol_2);
+
+		// Depending the option that was pass in ShopView hides the labels and inputs
+		// and put a correct title
 		switch (this.option) {
 		case 2:
+			// Put a title to the dialog
 			setTitle("Add Product");
 			break;
 		case 3:
+			// Put a title to the dialog
 			setTitle("Update Stock");
+			// Hides the label and input of price
 			lblPriceProduct.setVisible(false);
 			priceProduct.setVisible(false);
+			lblSymbol_2.setVisible(false);
 			break;
 		case 9:
+			// Put a title to the dialog
 			setTitle("Delete Product");
+			// Hides the label and inputs of stock and price
 			lblStockProduct.setVisible(false);
 			stockProduct.setVisible(false);
 			lblPriceProduct.setVisible(false);
 			priceProduct.setVisible(false);
+			lblSymbol_1.setVisible(false);
+			lblSymbol_2.setVisible(false);
+
 		}
 	}
 
 	public void addProduct() {
-		// Receives the parameters of the ProdcutView
+		// Receives the parameters of the ProdcutView, trim() removes blanks at both
+		// ends of the string
 		String name = nameProduct.getText().trim();
 		String stock = stockProduct.getText().trim();
 		String price = priceProduct.getText().trim();
@@ -150,8 +187,7 @@ public class ProductView extends JDialog implements ActionListener {
 			return;
 		}
 
-		// Check if the parameter of price and stock are numbers
-		if (isNumeric(price) && isNumeric(stock)) {
+		try {
 			// Pass the parameter to the correct type of data
 			double wholesalerPrice = Double.parseDouble(price);
 			int productStock = Integer.parseInt(stock);
@@ -163,19 +199,25 @@ public class ProductView extends JDialog implements ActionListener {
 				shop.addProduct(new Product(name, wholesalerPrice, true, productStock));
 				JOptionPane.showMessageDialog(this, "New product successfully created", "Create Product",
 						JOptionPane.INFORMATION_MESSAGE);
+				// Return to the ShopView
 				dispose();
 			} else {
+				// Report to the user that the product sent it's already created
 				JOptionPane.showMessageDialog(this, "The product " + name + " has already been created",
 						"Product Alredy Created", JOptionPane.ERROR_MESSAGE);
 			}
 
-		} else {
+		} catch (NumberFormatException number) {
+			// Report to the user that sent incorrect type to stock and price
 			JOptionPane.showMessageDialog(this, "Please enter valid numeric values for stock and price",
 					"Incorrect Type", JOptionPane.WARNING_MESSAGE);
 		}
+
 	}
 
 	public void updateStock() {
+		// Receives the parameters of the ProdcutView, trim() removes blanks at both
+		// ends of the string
 		String name = nameProduct.getText().trim();
 		String stock = stockProduct.getText().trim();
 
@@ -185,8 +227,7 @@ public class ProductView extends JDialog implements ActionListener {
 			return;
 		}
 
-		// Check if the parameter stock is numeric
-		if (isNumeric(stock)) {
+		try {
 			// Pass the parameter to the correct type of data
 			int productStock = Integer.parseInt(stock);
 
@@ -198,18 +239,25 @@ public class ProductView extends JDialog implements ActionListener {
 				product.setStock(totalStock);
 				JOptionPane.showMessageDialog(this, "Product stock updated successfully", "Update Stock",
 						JOptionPane.INFORMATION_MESSAGE);
+				// Return to the ShopView
 				dispose();
 			} else {
+				// Report to the user that the product is not created, and can't update stock
 				JOptionPane.showMessageDialog(this, "Product not found, unable to update stock", "ERROR: Update Stock",
 						JOptionPane.ERROR_MESSAGE);
 			}
-		} else {
+
+		} catch (NumberFormatException number) {
 			JOptionPane.showMessageDialog(this, "Invalid input for stock, only numeric values are accepted",
 					"Incorret Type", JOptionPane.WARNING_MESSAGE);
+
 		}
+
 	}
 
 	public void deleteProduct() {
+		// Receives the parameters of the ProdcutView, trim() removes blanks at both
+		// ends of the string
 		String name = nameProduct.getText().trim();
 
 		if (name.isEmpty()) {
@@ -225,21 +273,19 @@ public class ProductView extends JDialog implements ActionListener {
 			shop.removeProduct(exist);
 			JOptionPane.showMessageDialog(this, "Product " + name + " successfully deleted", "Delete Product",
 					JOptionPane.INFORMATION_MESSAGE);
+			// Return to the ShopView
 			dispose();
 		} else {
-			JOptionPane.showMessageDialog(this, "Error deleting product, please try again",
+			// Report that the product can't be deleted because is not created
+			JOptionPane.showMessageDialog(this, "Product not found, unable to delete product",
 					"ERROR: The product can't be deleted", JOptionPane.ERROR_MESSAGE);
 		}
-	}
-
-	public boolean isNumeric(String number) {
-		// Check if is a number or have a point
-		return number.matches("[0-9]+([.][0-9]+)?");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnOk) {
+			// Depending of the option sent by the ShopView call the correct method
 			switch (this.option) {
 			case 2:
 				addProduct();
@@ -254,6 +300,7 @@ public class ProductView extends JDialog implements ActionListener {
 		}
 
 		if (e.getSource() == btnBack) {
+			// Return to the ShopView
 			dispose();
 		}
 	}
