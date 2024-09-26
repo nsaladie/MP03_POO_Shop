@@ -8,10 +8,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import dao.DaoImplFile;
+
 public class Shop {
 	private Amount cash;
 	private ArrayList<Product> inventory;
 	private ArrayList<Sale> sales;
+	private DaoImplFile dao = new DaoImplFile();
 
 	final static double TAX_RATE = 1.04;
 
@@ -89,7 +92,7 @@ public class Shop {
 			case 9:
 				shop.eliminateProduct();
 				break;
-
+				
 			case 10:
 				exit = true;
 				break;
@@ -143,61 +146,14 @@ public class Shop {
 	 * load initial inventory to shop
 	 */
 	public void loadInventory() {
-		try {
-			File inventoryFile = new File("./files/inputInventory.txt");
-			// If the file not exists informs to the user.
-			if (!inventoryFile.exists()) {
-				System.out.println("El archivo de carga de inventario no existe");
-			}
-			// Read the file
-			FileReader fileReader = new FileReader(inventoryFile);
-			BufferedReader reader = new BufferedReader(fileReader);
-			String line = reader.readLine();
-			// Read each line of the file
-			while (line != null) {
-				// Separates the line when found a ';' and saves it in an array
-				String[] parts = line.split(";");
-				// Create the variables that will save the data
-				String product = "";
-				double wholeSale = 0.0;
-				int stock = 0;
+		setInventory(dao.getInventory());
+	}
 
-				for (int i = 0; i < parts.length; i++) {
-					// Separates the variable parts when found a ':' and saves it in an array
-					String[] key = parts[i].split(":");
-
-					switch (i) {
-					// Case 0: product name
-					case 0:
-						// Save only the product name
-						product = key[1];
-						break;
-					// Case 1: wholeSale
-					case 1:
-						// Convert the string to a double and save as wholesale price
-						wholeSale = Double.parseDouble(key[1]);
-						break;
-					// Case 2: stock
-					case 2:
-						// Convert the string to an integer and save as stock
-						stock = Integer.parseInt(key[1]);
-						break;
-					}
-
-				}
-				// Add a new product
-				addProduct(new Product(product, wholeSale, true, stock));
-				// Read the next line
-				line = reader.readLine();
-			}
-			// Close the bufferedReader and the fileReader
-			reader.close();
-			fileReader.close();
-
-		} catch (IOException e) {
-			// Inform the user if there was a problem with the file
-			System.out.println("Ha habido algún problema con el fichero");
-		}
+	/**
+	 * get a boolean if it is possible to export inventory in a file
+	 */
+	public boolean writeInventory() {
+		return dao.writeInventory(inventory);
 	}
 
 	/**
@@ -546,9 +502,13 @@ public class Shop {
 	public void removeProduct(Product product) {
 		inventory.remove(product);
 	}
-	
+
 	public ArrayList<Product> getInventory() {
 		return inventory;
+	}
+
+	public void setInventory(ArrayList<Product> product) {
+		this.inventory = product;
 	}
 
 	/**
