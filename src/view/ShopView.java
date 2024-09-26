@@ -22,6 +22,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private JPanel panelTitle;
 	private JLabel lblTitle;
 	private JLabel lblImageShop;
+	private JButton btnExportProduct;
 
 	/**
 	 * Launch the application.
@@ -116,35 +117,35 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private void initializeButtons() {
 		btnCashCount = new JButton("1. Cash Count");
 		btnCashCount.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnCashCount.setBounds(38, 132, 205, 35);
+		btnCashCount.setBounds(38, 174, 205, 35);
 		// Register if the user check this button
 		btnCashCount.addActionListener(this);
 		panel.add(btnCashCount);
 
 		btnAddProduct = new JButton("2. Add Product");
 		btnAddProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnAddProduct.setBounds(38, 177, 205, 35);
+		btnAddProduct.setBounds(38, 219, 205, 35);
 		// Register if the user check this button
 		btnAddProduct.addActionListener(this);
 		panel.add(btnAddProduct);
 
 		btnAddStock = new JButton("3. Update Stock");
 		btnAddStock.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnAddStock.setBounds(37, 222, 206, 35);
+		btnAddStock.setBounds(37, 264, 206, 35);
 		// Register if the user check this button
 		btnAddStock.addActionListener(this);
 		panel.add(btnAddStock);
 
 		btnDeleteProduct = new JButton("9. Delete Product");
 		btnDeleteProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnDeleteProduct.setBounds(38, 312, 205, 35);
+		btnDeleteProduct.setBounds(38, 354, 205, 35);
 		// Register if the user check this button
 		btnDeleteProduct.addActionListener(this);
 		panel.add(btnDeleteProduct);
 
 		btnShowInventory = new JButton("5. Show Inventory");
 		btnShowInventory.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnShowInventory.setBounds(38, 267, 205, 35);
+		btnShowInventory.setBounds(38, 309, 205, 35);
 		panel.add(btnShowInventory);
 		btnShowInventory.addActionListener(this);
 		// Registering the current class (this) as a key listener for this component
@@ -158,6 +159,12 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		lblImageShop.setBounds(296, 91, 271, 256);
 		panel.add(lblImageShop);
 
+		btnExportProduct = new JButton("0. Export Inventory");
+		btnExportProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		btnExportProduct.setBounds(38, 129, 205, 35);
+		panel.add(btnExportProduct);
+		btnExportProduct.addActionListener(this);
+
 	}
 
 	private void openCashView(int option) {
@@ -169,7 +176,8 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	}
 
 	private void openProductView(int option) {
-		// Call the view of ProductView, pass the parameters of shop and the option of the menu (add, update, delete)
+		// Call the view of ProductView, pass the parameters of shop and the option of
+		// the menu (add, update, delete)
 		ProductView view = new ProductView(shop, option);
 		view.setLocation(getX() + getWidth() / 2, getY() + 50);
 		// Put visible the ProductView
@@ -184,26 +192,45 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		view.setVisible(true);
 	}
 
+	private void exportInventory() {
+		boolean fileExport = shop.writeInventory();
+
+		if (fileExport) {
+			JOptionPane.showMessageDialog(this, "Inventory Successfully Exported", "Information",
+					JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(this, "Error Exporting Inventory", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		// If the user clicks on the btnCashCount button, call the openCashView method with Constants.SHOW_CASH parameter
+		if (e.getSource() == btnExportProduct) {
+			exportInventory();
+		}
+		// If the user clicks on the btnCashCount button, call the openCashView method
+		// with Constants.SHOW_CASH parameter
 		if (e.getSource() == btnCashCount) {
 			openCashView(Constants.SHOW_CASH);
 		}
-		// If the user clicks on the btnAddProduct button, call the openProductView method with Constants.ADD_PRODUCT parameter
+		// If the user clicks on the btnAddProduct button, call the openProductView
+		// method with Constants.ADD_PRODUCT parameter
 		if (e.getSource() == btnAddProduct) {
 			openProductView(Constants.ADD_PRODUCT);
 		}
-		// If the user clicks on the btnAddStock button, call the openProductView method with Constants.UPDATE_STOCK parameter
+		// If the user clicks on the btnAddStock button, call the openProductView method
+		// with Constants.UPDATE_STOCK parameter
 		if (e.getSource() == btnAddStock) {
 			openProductView(Constants.UPDATE_STOCK);
 		}
-		// If the user clicks on the btnShowInventory button, call the opneInventoryView method with Constants.SHOW_INVENTORY parameter
+		// If the user clicks on the btnShowInventory button, call the opneInventoryView
+		// method with Constants.SHOW_INVENTORY parameter
 		if (e.getSource() == btnShowInventory) {
 			opneInventoryView(Constants.SHOW_INVENTORY);
 		}
-		// If the user clicks on the btnDeleteProduct button, call the openProductView method with Constants.DELETE_PRODUCT parameter
+		// If the user clicks on the btnDeleteProduct button, call the openProductView
+		// method with Constants.DELETE_PRODUCT parameter
 		if (e.getSource() == btnDeleteProduct) {
 			openProductView(Constants.DELETE_PRODUCT);
 		}
@@ -219,8 +246,12 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
 
-		// Switch that calls the appropriate method depending on the key pressed by the user
+		// Switch that calls the appropriate method depending on the key pressed by the
+		// user
 		switch (key) {
+		case KeyEvent.VK_0:
+			exportInventory();
+			break;
 		case KeyEvent.VK_1:
 			openCashView(Constants.SHOW_CASH);
 			break;
