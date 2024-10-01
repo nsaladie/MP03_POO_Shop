@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import model.*;
 
 public class DaoImplFile implements Dao {
@@ -98,8 +100,17 @@ public class DaoImplFile implements Dao {
 		try {
 			LocalDateTime date = LocalDateTime.now();
 			String nameFile = "inventory_" + date.format(formatter) + ".txt";
-			File file = new File("./files/" + nameFile);
-			// Create a new file
+
+			String directory = "./files/";
+			File file = new File(directory);
+
+			if (!file.exists()) {
+				directory = JOptionPane.showInputDialog("Name of the new directory:");
+				file = new File("./" + directory);
+				file.mkdir();
+			}
+
+			file = new File(file, nameFile);
 			file.createNewFile();
 			// File writer to write into the file
 			FileWriter write = new FileWriter(file);
