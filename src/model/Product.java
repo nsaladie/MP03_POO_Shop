@@ -5,6 +5,7 @@ public class Product {
 	private String name;
 	private Amount publicPrice;
 	private Amount wholesalerPrice;
+	private String money;
 	private boolean available;
 	private int stock;
 	private static int totalProducts;
@@ -20,6 +21,19 @@ public class Product {
 		this.available = available;
 		this.stock = stock;
 		totalProducts++;
+	}
+
+	// Constructor for read XML
+	public Product(String name) {
+		this.name = name;
+	}
+
+	public void setMoney(String money) {
+		this.money = (money);
+	}
+
+	public String getMoney() {
+		return this.money;
 	}
 
 	@Override

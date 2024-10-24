@@ -9,12 +9,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import dao.DaoImplFile;
+import dao.DaoImplXml;
 
 public class Shop {
 	private Amount cash;
 	private ArrayList<Product> inventory;
 	private ArrayList<Sale> sales;
-	private DaoImplFile dao = new DaoImplFile();
+	private DaoImplFile daoFile = new DaoImplFile();
+	private DaoImplXml daoXml = new DaoImplXml();
 
 	final static double TAX_RATE = 1.04;
 
@@ -92,7 +94,7 @@ public class Shop {
 			case 9:
 				shop.eliminateProduct();
 				break;
-				
+
 			case 10:
 				exit = true;
 				break;
@@ -146,14 +148,16 @@ public class Shop {
 	 * load initial inventory to shop
 	 */
 	public void loadInventory() {
-		setInventory(dao.getInventory());
+		// setInventory(daoFile.getInventory());
+		setInventory(daoXml.getInventory());
 	}
 
 	/**
 	 * get a boolean if it is possible to export inventory in a file
 	 */
 	public boolean writeInventory() {
-		return dao.writeInventory(inventory);
+		// return daoFile.writeInventory(inventory);
+		return daoXml.writeInventory(inventory);
 	}
 
 	/**

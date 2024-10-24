@@ -184,7 +184,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		view.setVisible(true);
 	}
 
-	private void opneInventoryView(int option) {
+	private void openInventoryView(int option) {
 		// Call the InventoryView and pass the parameter of the shop
 		InventoryView view = new InventoryView(shop);
 		view.setLocation(getX() + getWidth() / 2, getY() + 50);
@@ -227,7 +227,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		// If the user clicks on the btnShowInventory button, call the opneInventoryView
 		// method with Constants.SHOW_INVENTORY parameter
 		if (e.getSource() == btnShowInventory) {
-			opneInventoryView(Constants.SHOW_INVENTORY);
+			openInventoryView(Constants.SHOW_INVENTORY);
 		}
 		// If the user clicks on the btnDeleteProduct button, call the openProductView
 		// method with Constants.DELETE_PRODUCT parameter
@@ -262,7 +262,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			openProductView(Constants.UPDATE_STOCK);
 			break;
 		case KeyEvent.VK_5:
-			opneInventoryView(Constants.SHOW_INVENTORY);
+			openInventoryView(Constants.SHOW_INVENTORY);
 			break;
 		case KeyEvent.VK_9:
 			openProductView(Constants.DELETE_PRODUCT);
