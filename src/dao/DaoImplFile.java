@@ -126,7 +126,7 @@ public class DaoImplFile implements Dao {
 				String products = "Product=" + listProducts.getName();
 				String stock = "Stock=" + listProducts.getStock();
 
-				String exportData = id + division + products + division + stock + "\n";
+				String exportData = id + division + products + division + stock + division + "\n";
 
 				// Write the export data to the file
 				writeFile.append(exportData);
