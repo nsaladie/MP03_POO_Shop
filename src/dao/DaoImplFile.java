@@ -13,7 +13,7 @@ import model.*;
 public class DaoImplFile implements Dao {
 
 	@Override
-	public void connect() throws SQLException {
+	public void connect() {
 		// TODO Auto-generated method stub
 
 	}
@@ -25,7 +25,7 @@ public class DaoImplFile implements Dao {
 	}
 
 	@Override
-	public void disconnect() throws SQLException {
+	public void disconnect() {
 		// TODO Auto-generated method stub
 
 	}

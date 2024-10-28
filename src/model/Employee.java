@@ -37,28 +37,16 @@ public class Employee extends Person implements Logable {
 
 	@Override
 	public boolean login(int user, String password) {
-		// TODO Auto-generated method stub
-		try {
-			dao.connect();
-			Employee employee = dao.getEmployee(user, password);
+		dao.connect();
+		Employee employee = dao.getEmployee(user, password);
 
-			if (employee != null) {
-				dao.disconnect();
-				return true;
-			}
-
-		} catch (SQLException e) {
-			System.out.println(e);
+		if (employee != null) {
+			dao.disconnect();
+			return true;
+		} else {
+			dao.disconnect();
+			return false;
 		}
 
-		return false;
 	}
-
-	// Check if the user and password send by user are equals to the constants
-	// public boolean login(int user, String password) {
-	// if (user == EMPLOYEEDID && password.equals(PASSWORD)) {
-	// return true;
-	// }
-	// return false;
-	// }
 }
