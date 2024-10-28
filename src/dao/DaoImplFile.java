@@ -123,8 +123,8 @@ public class DaoImplFile implements Dao {
 				// Generate ID for each product
 				String id = String.valueOf(listProducts.getId());
 				String division = ";";
-				String products = "Product=" + listProducts.getName();
-				String stock = "Stock=" + listProducts.getStock();
+				String products = "Product:" + listProducts.getName();
+				String stock = "Stock:" + listProducts.getStock();
 
 				String exportData = id + division + products + division + stock + division + "\n";
 
