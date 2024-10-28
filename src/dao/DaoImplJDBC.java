@@ -15,13 +15,17 @@ public class DaoImplJDBC implements Dao {
 	}
 
 	@Override
-	public void connect() throws SQLException {
+	public void connect() {
 		// TODO Auto-generated method stub
 		String url = "jdbc:mysql://localhost:3306/Shop";
 		String user = "root";
 		String password = "";
 
-		this.connection = DriverManager.getConnection(url, user, password);
+		try {
+			this.connection = DriverManager.getConnection(url, user, password);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -48,10 +52,14 @@ public class DaoImplJDBC implements Dao {
 	}
 
 	@Override
-	public void disconnect() throws SQLException {
-		// TODO Auto-generated method stub
-		if (connection != null) {
-			connection.close();
+	public void disconnect() {
+		try {
+			// TODO Auto-generated method stub
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
