@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<products total="6">
+	<product id="1">
+		<name>Manzana</name>
+		<price currency="€">10.0</price>
+		<stock>10</stock>
+	</product>
+	<product id="2">
+		<name>Fresa</name>
+		<price currency="€">5.0</price>
+		<stock>20</stock>
+	</product>
+	<product id="3">
+		<name>Platano</name>
+		<price currency="€">9.0</price>
+		<stock>15</stock>
+	</product>
+	<product id="4">
+		<name>Mango</name>
+		<price currency="€">25.0</price>
+		<stock>5</stock>
+	</product>
+	<product id="5">
+		<name>Limon</name>
+		<price currency="€">4.0</price>
+		<stock>5</stock>
+	</product>
+	<product id="6">
+		<name>Mandarina</name>
+		<price currency="€">12.0</price>
+		<stock>30</stock>
+	</product>
+</products>
