@@ -61,7 +61,7 @@ public class DomWriter {
 			productPrice.setTextContent(String.valueOf(product.getWholesalerPrice().getValue()));
 			newProduct.appendChild(productPrice);
 
-			Element productStock = document.createElement("price");
+			Element productStock = document.createElement("stock");
 			productStock.setTextContent(String.valueOf(product.getStock()));
 			newProduct.appendChild(productStock);
 		}
