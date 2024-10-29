@@ -61,6 +61,7 @@ public class SaxReader extends DefaultHandler {
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		if (qName.equals("product")) {
 			this.products.add(product);
+			Product.setTotalProducts(idProduct);
 			idProduct++;
 		}
 		this.parsedElement = "";
