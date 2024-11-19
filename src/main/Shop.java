@@ -8,8 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import dao.DaoImplFile;
-import dao.DaoImplXml;
+import dao.*;
 
 public class Shop {
 	private Amount cash;
@@ -17,6 +16,8 @@ public class Shop {
 	private ArrayList<Sale> sales;
 	private DaoImplFile daoFile = new DaoImplFile();
 	private DaoImplXml daoXml = new DaoImplXml();
+	private DaoImplJaxb daoJaxb = new DaoImplJaxb();
+	private static Shop shop = new Shop();
 
 	final static double TAX_RATE = 1.04;
 
@@ -27,7 +28,6 @@ public class Shop {
 	}
 
 	public static void main(String[] args) {
-		Shop shop = new Shop();
 		// Load initial inventory
 		shop.loadInventory();
 		// Show the view of the LoginView
@@ -110,7 +110,7 @@ public class Shop {
 	 * Login the session of the employee
 	 */
 	public void initSessionView() {
-		LoginView login = new LoginView();
+		LoginView login = new LoginView(shop);
 		login.setVisible(true);
 	}
 
@@ -149,7 +149,8 @@ public class Shop {
 	 */
 	public void loadInventory() {
 		// setInventory(daoFile.getInventory());
-		setInventory(daoXml.getInventory());
+		// setInventory(daoXml.getInventory());
+		setInventory(daoJaxb.getInventory());
 	}
 
 	/**
@@ -157,7 +158,8 @@ public class Shop {
 	 */
 	public boolean writeInventory() {
 		// return daoFile.writeInventory(inventory);
-		return daoXml.writeInventory(inventory);
+		// return daoXml.writeInventory(inventory);
+		return daoJaxb.writeInventory(inventory);
 	}
 
 	/**

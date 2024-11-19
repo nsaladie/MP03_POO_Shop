@@ -1,6 +1,7 @@
 package view;
 
 import exception.LimitLoginException;
+import main.Shop;
 import util.Constants;
 
 import javax.swing.*;
@@ -20,6 +21,7 @@ public class LoginView extends JFrame implements ActionListener {
 	private int loginAttempts = 0;
 	private JLabel lblSymbol;
 	private JLabel lblSymbol2;
+	private static Shop shop;
 
 	/**
 	 * Launch the application.
@@ -28,7 +30,7 @@ public class LoginView extends JFrame implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LoginView frame = new LoginView();
+					LoginView frame = new LoginView(shop);
 					frame.setVisible(true);
 					frame.setTitle("Login");
 				} catch (Exception e) {
@@ -41,7 +43,9 @@ public class LoginView extends JFrame implements ActionListener {
 	/**
 	 * Create the frame.
 	 */
-	public LoginView() {
+	public LoginView(Shop shop) {
+		this.shop = shop;
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 560);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -139,7 +143,7 @@ public class LoginView extends JFrame implements ActionListener {
 			if (loginAttempts < Constants.MAX_LOGIN_ATTEMPTS) {
 				if (isLogin) {
 					// Create a new object of the class ShopView
-					ShopView shopView = new ShopView();
+					ShopView shopView = new ShopView(shop);
 					// Put visible the view of ShopView
 					shopView.setVisible(true);
 					// Put a title to the view

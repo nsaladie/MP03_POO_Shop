@@ -11,7 +11,7 @@ import javax.swing.border.EmptyBorder;
 public class ShopView extends JFrame implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = 1L;
-	private Shop shop = new Shop();
+	private static Shop shop;
 	private JPanel contentPane;
 	private JButton btnCashCount;
 	private JButton btnAddProduct;
@@ -31,7 +31,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ShopView frame = new ShopView();
+					ShopView frame = new ShopView(shop);
 					frame.setVisible(true);
 					// Enable keyboard focus for the JFrame
 					frame.setFocusable(true);
@@ -45,8 +45,8 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	/**
 	 * Create the frame.
 	 */
-	public ShopView() {
-		shop.loadInventory();
+	public ShopView(Shop shop) {
+		this.shop = shop;
 
 		initializeFrame();
 		initializeContentPane();
