@@ -27,7 +27,6 @@ public class JaxbUnMarshaller {
 			if (p.getStock() >= 1) {
 				p.setAvailable(true);
 			}
-			System.out.println(p.getId() + p.toString());
 		}
 		listProduct.addAll(products.getListProducts());
 
