@@ -34,7 +34,6 @@ public class SaxReader extends DefaultHandler {
 			this.product.setId(idProduct);
 			break;
 		case "wholesalerPrice":
-			this.product.setMoney(attributes.getValue("currency"));
 			break;
 		}
 		this.parsedElement = qName;
@@ -53,6 +52,10 @@ public class SaxReader extends DefaultHandler {
 			break;
 		case "stock":
 			this.product.setStock(Integer.valueOf(value));
+			// Put a product available if the stock is equals or upper to 1
+			if (this.product.getStock() >= 1) {
+				this.product.setAvailable(true);
+			}
 			break;
 		}
 	}
