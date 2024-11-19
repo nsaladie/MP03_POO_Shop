@@ -1,11 +1,17 @@
 package model;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlRootElement(name = "product")
+@XmlType(propOrder = { "available", "wholesalerPrice", "publicPrice", "stock" })
 public class Product {
 	private int id;
 	private String name;
 	private Amount publicPrice;
 	private Amount wholesalerPrice;
-	private String money;
 	private boolean available;
 	private int stock;
 	private static int totalProducts;
@@ -23,28 +29,18 @@ public class Product {
 		totalProducts++;
 	}
 
+	// Constructor for JAXB
+	public Product() {
+		this.id = totalProducts + 1;
+		totalProducts++;
+	}
+
 	// Constructor for read XML
 	public Product(String name) {
 		this.name = name;
 	}
 
-	public void setMoney(String money) {
-		this.money = (money);
-	}
-
-	public String getMoney() {
-		return this.money;
-	}
-
-	@Override
-	public String toString() {
-		return "Product [Nombre = " + name + "," + publicPrice + ", Stock = " + stock + "] ";
-	}
-
-	public String listProduct() {
-		return name + "," + publicPrice.amountSale() + ";";
-	}
-
+	@XmlAttribute(name = "id")
 	public int getId() {
 		return id;
 	}
@@ -53,6 +49,7 @@ public class Product {
 		this.id = id;
 	}
 
+	@XmlAttribute(name = "name")
 	public String getName() {
 		return name;
 	}
@@ -61,6 +58,7 @@ public class Product {
 		this.name = name;
 	}
 
+	@XmlElement(name = "publicPrice")
 	public Amount getPublicPrice() {
 		return publicPrice;
 	}
@@ -69,6 +67,7 @@ public class Product {
 		this.publicPrice = publicPrice;
 	}
 
+	@XmlElement(name = "wholesalerPrice")
 	public Amount getWholesalerPrice() {
 		return wholesalerPrice;
 	}
@@ -77,6 +76,7 @@ public class Product {
 		this.wholesalerPrice = wholesalerPrice;
 	}
 
+	@XmlElement(name = "available")
 	public boolean isAvailable() {
 		return available;
 	}
@@ -85,6 +85,7 @@ public class Product {
 		this.available = available;
 	}
 
+	@XmlElement(name = "stock")
 	public int getStock() {
 		return stock;
 	}
@@ -104,6 +105,15 @@ public class Product {
 	public void expire() {
 		double newValue = this.publicPrice.getValue() * (1 - EXPIRATION_RATE);
 		this.publicPrice.setValue(newValue);
+	}
+
+	@Override
+	public String toString() {
+		return "Product [ ID = " + id + ", Nombre = " + name + "," + publicPrice + ", Stock = " + stock + "] ";
+	}
+
+	public String listProduct() {
+		return name + "," + publicPrice.amountSale() + ";";
 	}
 
 }
