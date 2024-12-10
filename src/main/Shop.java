@@ -14,9 +14,14 @@ public class Shop {
 	private Amount cash;
 	private ArrayList<Product> inventory;
 	private ArrayList<Sale> sales;
-	private DaoImplFile daoFile = new DaoImplFile();
-	private DaoImplXml daoXml = new DaoImplXml();
-	private DaoImplJaxb daoJaxb = new DaoImplJaxb();
+	// Connection using File
+	//private Dao dao = new DaoImplFile();
+	// Connection using Xml
+	//private Dao dao = new DaoImplXml();
+	// Connection using Jaxb
+	//private Dao dao = new DaoImplJaxb();
+	// Connection using JDBC
+	private Dao dao = new DaoImplJDBC();
 	private static Shop shop = new Shop();
 
 	final static double TAX_RATE = 1.04;
@@ -148,18 +153,19 @@ public class Shop {
 	 * load initial inventory to shop
 	 */
 	public void loadInventory() {
-		// setInventory(daoFile.getInventory());
-		// setInventory(daoXml.getInventory());
-		setInventory(daoJaxb.getInventory());
+		dao.connect();
+		setInventory(dao.getInventory());
+		dao.disconnect();
 	}
 
 	/**
 	 * get a boolean if it is possible to export inventory in a file
 	 */
 	public boolean writeInventory() {
-		// return daoFile.writeInventory(inventory);
-		// return daoXml.writeInventory(inventory);
-		return daoJaxb.writeInventory(inventory);
+		dao.connect();
+		boolean isExported = dao.writeInventory(inventory);
+		dao.disconnect();
+		return isExported;
 	}
 
 	/**
