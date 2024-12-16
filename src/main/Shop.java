@@ -15,11 +15,11 @@ public class Shop {
 	private ArrayList<Product> inventory;
 	private ArrayList<Sale> sales;
 	// Connection using File
-	//private Dao dao = new DaoImplFile();
+	// private Dao dao = new DaoImplFile();
 	// Connection using Xml
-	//private Dao dao = new DaoImplXml();
+	// private Dao dao = new DaoImplXml();
 	// Connection using Jaxb
-	//private Dao dao = new DaoImplJaxb();
+	// private Dao dao = new DaoImplJaxb();
 	// Connection using JDBC
 	private Dao dao = new DaoImplJDBC();
 	private static Shop shop = new Shop();
@@ -235,7 +235,8 @@ public class Shop {
 			int stock = scanner.nextInt();
 			// update stock product
 			int stockTotal = product.getStock() + stock;
-			product.setStock(stockTotal);
+			;
+			updateStockProduct(stockTotal, product);
 			System.out.println("El stock del producto " + name + " ha sido actualizado a " + product.getStock());
 
 		} else {
@@ -504,6 +505,18 @@ public class Shop {
 	 */
 	public void addProduct(Product product) {
 		inventory.add(product);
+		createProduct(product);
+	}
+
+	/**
+	 * update a product to inventory
+	 * 
+	 * @param updateStock
+	 * @param product
+	 */
+	public void updateStockProduct(int updateStock, Product product) {
+		product.setStock(updateStock);
+		updateProduct(product);
 	}
 
 	/**
@@ -513,6 +526,7 @@ public class Shop {
 	 */
 	public void removeProduct(Product product) {
 		inventory.remove(product);
+		deleteProduc(product);
 	}
 
 	public ArrayList<Product> getInventory() {
@@ -538,4 +552,21 @@ public class Shop {
 
 	}
 
+	private void createProduct(Product product) {
+		dao.connect();
+		dao.addProduct(product);
+		dao.disconnect();
+	}
+
+	private void updateProduct(Product product) {
+		dao.connect();
+		dao.updateProduct(product);
+		dao.disconnect();
+	}
+
+	private void deleteProduc(Product product) {
+		dao.connect();
+		dao.deleteProduct(product);
+		dao.disconnect();
+	}
 }

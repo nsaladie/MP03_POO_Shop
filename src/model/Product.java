@@ -28,6 +28,18 @@ public class Product {
 		this.stock = stock;
 		totalProducts++;
 	}
+	
+	//Constructor for JDBC
+	public Product(int id, String name, double wholesalerPrice, boolean available, int stock) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.wholesalerPrice = new Amount(wholesalerPrice);
+		this.publicPrice = new Amount(wholesalerPrice * 2);
+		this.available = available;
+		this.stock = stock;
+		Product.totalProducts = id++;
+	}
 
 	// Constructor for JAXB
 	public Product() {
