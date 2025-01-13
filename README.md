@@ -38,7 +38,10 @@ The objective of this project is to develop a system capable of managing various
    - JAXB Marshaller/Unmarshaller:
       - Exports inventory to timestamped XML files (e.g., inventory_YYYY-MM-DD.xml).
       - Imports inventory from XML files, integrating the data into the system seamlessly.
-
+9) **Database Integration**
+   - **Initial Inventory from Database:** Load the shop's initial inventory directly from a connected SQL database.
+   - **Dynamic Inventory Updates:** Automatically sync inventory changes made in the application with the database.
+   - **Export Inventory to Database:** Save the current state of the shop's inventory back to the database for record-keeping.
 ## Getting Started
 ### Prerequisites
 - **Java Development Kit (JDK):** Ensure that you have JDK 17 or higher installed.
