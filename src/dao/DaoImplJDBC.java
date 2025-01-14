@@ -137,12 +137,12 @@ public class DaoImplJDBC implements Dao {
 
 	@Override
 	public void updateProduct(Product product) {
-		String updateProduct = "UPDATE Inventory SET stock = ? WHERE name = ?;";
+		String updateProduct = "UPDATE Inventory SET stock = ? WHERE id = ?;";
 
 		try {
 			PreparedStatement updatePs = this.connection.prepareStatement(updateProduct);
 			updatePs.setInt(1, product.getStock());
-			updatePs.setString(2, product.getName());
+			updatePs.setInt(2, product.getId());
 
 			updatePs.execute();
 
