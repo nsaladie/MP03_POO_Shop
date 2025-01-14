@@ -153,11 +153,11 @@ public class DaoImplJDBC implements Dao {
 
 	@Override
 	public void deleteProduct(Product product) {
-		String deleteProduct = "DELETE FROM Inventory WHERE name = ?;";
+		String deleteProduct = "DELETE FROM Inventory WHERE id = ?;";
 
 		try {
 			PreparedStatement deletePs = this.connection.prepareStatement(deleteProduct);
-			deletePs.setString(1, product.getName());
+			deletePs.setInt(1, product.getId());
 
 			deletePs.execute();
 
