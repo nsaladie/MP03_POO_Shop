@@ -155,7 +155,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private void initializeImage() {
 		lblImageShop = new JLabel("");
 		lblImageShop.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImageShop.setIcon(new ImageIcon(ShopView.class.getResource("/resorce/grow-shop.png")));
+		//lblImageShop.setIcon(new ImageIcon(ShopView.class.getResource("/resorce/grow-shop.png")));
 		lblImageShop.setBounds(296, 91, 271, 256);
 		panel.add(lblImageShop);
 

@@ -1,18 +1,31 @@
 package model;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+@Entity
+@Table(name = "inventory")
 @XmlRootElement(name = "product")
 @XmlType(propOrder = { "available", "wholesalerPrice", "publicPrice", "stock" })
 public class Product {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = true)
 	private int id;
+	@Column
 	private String name;
+	@Column
+	private double price;
+	@Transient
 	private Amount publicPrice;
+	@Transient
 	private Amount wholesalerPrice;
+	@Column
 	private boolean available;
+	@Column
 	private int stock;
 	private static int totalProducts;
 
@@ -28,8 +41,8 @@ public class Product {
 		this.stock = stock;
 		totalProducts++;
 	}
-	
-	//Constructor for JDBC
+
+	// Constructor for JDBC
 	public Product(int id, String name, double wholesalerPrice, boolean available, int stock) {
 		super();
 		this.id = id;
@@ -73,6 +86,16 @@ public class Product {
 	@XmlElement(name = "publicPrice")
 	public Amount getPublicPrice() {
 		return publicPrice;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+		this.wholesalerPrice = new Amount(price);
+		this.publicPrice = new Amount(price * 2);
 	}
 
 	public void setPublicPrice(Amount publicPrice) {

@@ -21,7 +21,9 @@ public class Shop {
 	// Connection using Jaxb
 	// private Dao dao = new DaoImplJaxb();
 	// Connection using JDBC
-	private Dao dao = new DaoImplJDBC();
+	// private Dao dao = new DaoImplJDBC();
+	// Connection using Hibernate
+	private Dao dao = new DaoImplHibernate();
 	private static Shop shop = new Shop();
 
 	final static double TAX_RATE = 1.04;
