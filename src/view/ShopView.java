@@ -21,8 +21,8 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private JPanel panel;
 	private JPanel panelTitle;
 	private JLabel lblTitle;
-	private JLabel lblImageShop;
 	private JButton btnExportProduct;
+	private JLabel lblNewLabel;
 
 	/**
 	 * Launch the application.
@@ -153,16 +153,17 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	}
 
 	private void initializeImage() {
-		lblImageShop = new JLabel("");
-		lblImageShop.setHorizontalAlignment(SwingConstants.CENTER);
-		//lblImageShop.setIcon(new ImageIcon(ShopView.class.getResource("/resorce/grow-shop.png")));
-		lblImageShop.setBounds(296, 91, 271, 256);
-		panel.add(lblImageShop);
 
 		btnExportProduct = new JButton("0. Export Inventory");
 		btnExportProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
 		btnExportProduct.setBounds(38, 129, 205, 35);
 		panel.add(btnExportProduct);
+
+		lblNewLabel = new JLabel("");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setIcon(new ImageIcon(ShopView.class.getResource("/resorce/grow-shop.png")));
+		lblNewLabel.setBounds(272, 117, 286, 272);
+		panel.add(lblNewLabel);
 		btnExportProduct.addActionListener(this);
 
 	}
