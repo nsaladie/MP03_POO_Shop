@@ -162,4 +162,10 @@ public class DaoImplFile implements Dao {
 		
 	}
 
+	@Override
+	public boolean writeSales(ArrayList<Sale> sales) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

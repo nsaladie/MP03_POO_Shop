@@ -18,11 +18,13 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	private JButton btnAddStock;
 	private JButton btnDeleteProduct;
 	private JButton btnShowInventory;
+	private JButton btnSale;
+	private JButton btnListSale;
+	private JButton btnExportSale;
 	private JPanel panel;
 	private JPanel panelTitle;
 	private JLabel lblTitle;
 	private JButton btnExportProduct;
-	private JLabel lblNewLabel;
 
 	/**
 	 * Launch the application.
@@ -46,7 +48,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	 * Create the frame.
 	 */
 	public ShopView(Shop shop) {
-		this.shop = shop;
+		ShopView.shop = shop;
 
 		initializeFrame();
 		initializeContentPane();
@@ -54,18 +56,19 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		initializePanelTitle();
 		initializeMenuLabels();
 		initializeButtons();
-		initializeImage();
+
+		this.addKeyListener(this);
+		this.setFocusable(true);
+		this.requestFocusInWindow();
 	}
 
 	private void initializeFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 665, 500);
-		// Get the screen size of the client computer
+		setBounds(100, 100, 700, 550);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		// Displays the shopView sale in the middle of the computer screen.
 		setLocation(dim.width / 2 - getSize().width / 2, dim.height / 2 - getSize().height / 2);
-		// Does not allow the user to change the size of the window
 		setResizable(false);
+		setTitle("MiTienda - Management");
 	}
 
 	private void initializeContentPane() {
@@ -77,95 +80,117 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 	}
 
 	private void initializePanel() {
-		panel = new JPanel();
-		panel.setBackground(new Color(240, 240, 240));
-		panel.setBounds(31, 34, 581, 400);
+		panel = new JPanel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setColor(Color.WHITE);
+				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+			}
+		};
+		panel.setBounds(49, 30, 600, 450);
+		panel.setOpaque(false);
 		contentPane.add(panel);
 		panel.setLayout(null);
 	}
 
 	private void initializePanelTitle() {
-		panelTitle = new JPanel();
-		panelTitle.setBackground(new Color(176, 224, 230));
-		panelTitle.setBounds(0, 0, 581, 65);
-		panel.add(panelTitle);
-		panelTitle.setLayout(null);
+		panelTitle = new JPanel() {
+			private static final long serialVersionUID = 1L;
 
-		lblTitle = new JLabel("MP05 - Shop");
-		lblTitle.setForeground(Color.BLACK);
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setColor(new Color(135, 206, 250));
+				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 10);
+			}
+		};
+		panelTitle.setBounds(0, 0, 600, 70);
+		panelTitle.setOpaque(false);
+		panelTitle.setLayout(null);
+		panel.add(panelTitle);
+
+		lblTitle = new JLabel("Shop Management");
+		lblTitle.setForeground(Color.DARK_GRAY);
 		lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
-		lblTitle.setFont(new Font("SansSerif", Font.BOLD, 40));
-		lblTitle.setBounds(10, 10, 253, 45);
+		lblTitle.setFont(new Font("SansSerif", Font.BOLD, 32));
+		lblTitle.setBounds(15, 15, 400, 40);
 		panelTitle.add(lblTitle);
 
 		JLabel lblNameShop = new JLabel("MiTienda.com");
-		lblNameShop.setForeground(Color.BLACK);
+		lblNameShop.setForeground(Color.DARK_GRAY);
 		lblNameShop.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNameShop.setFont(new Font("SansSerif", Font.BOLD, 40));
-		lblNameShop.setBounds(282, 10, 289, 45);
+		lblNameShop.setFont(new Font("SansSerif", Font.BOLD, 28));
+		lblNameShop.setBounds(320, 15, 260, 40);
 		panelTitle.add(lblNameShop);
 	}
 
 	private void initializeMenuLabels() {
-		JLabel lblMenu = new JLabel("Menu");
+		JLabel lblMenu = new JLabel("Main Menu");
 		lblMenu.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMenu.setFont(new Font("SansSerif", Font.BOLD, 25));
-		lblMenu.setBounds(10, 84, 276, 35);
+		lblMenu.setFont(new Font("SansSerif", Font.BOLD, 24));
+		lblMenu.setBounds(0, 90, 600, 35);
+		lblMenu.setForeground(new Color(60, 63, 65));
 		panel.add(lblMenu);
 	}
 
 	private void initializeButtons() {
-		btnCashCount = new JButton("1. Cash Count");
-		btnCashCount.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnCashCount.setBounds(38, 174, 205, 35);
-		// Register if the user check this button
-		btnCashCount.addActionListener(this);
-		panel.add(btnCashCount);
-
-		btnAddProduct = new JButton("2. Add Product");
-		btnAddProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnAddProduct.setBounds(38, 219, 205, 35);
-		// Register if the user check this button
-		btnAddProduct.addActionListener(this);
-		panel.add(btnAddProduct);
-
-		btnAddStock = new JButton("3. Update Stock");
-		btnAddStock.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnAddStock.setBounds(37, 264, 206, 35);
-		// Register if the user check this button
-		btnAddStock.addActionListener(this);
-		panel.add(btnAddStock);
-
-		btnDeleteProduct = new JButton("9. Delete Product");
-		btnDeleteProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnDeleteProduct.setBounds(38, 354, 205, 35);
-		// Register if the user check this button
-		btnDeleteProduct.addActionListener(this);
-		panel.add(btnDeleteProduct);
-
-		btnShowInventory = new JButton("5. Show Inventory");
-		btnShowInventory.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnShowInventory.setBounds(38, 309, 205, 35);
-		panel.add(btnShowInventory);
-		btnShowInventory.addActionListener(this);
-		// Registering the current class (this) as a key listener for this component
-		this.addKeyListener(this);
-	}
-
-	private void initializeImage() {
-
-		btnExportProduct = new JButton("0. Export Inventory");
-		btnExportProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnExportProduct.setBounds(38, 129, 205, 35);
+		// Buttons on the right
+		btnExportProduct = createStyledButton("0. Export Inventory", 50, 150);
 		panel.add(btnExportProduct);
-
-		lblNewLabel = new JLabel("");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setIcon(new ImageIcon(ShopView.class.getResource("/resorce/grow-shop.png")));
-		lblNewLabel.setBounds(272, 117, 286, 272);
-		panel.add(lblNewLabel);
 		btnExportProduct.addActionListener(this);
 
+		btnAddProduct = createStyledButton("2. Add Product", 50, 210);
+		panel.add(btnAddProduct);
+		btnAddProduct.addActionListener(this);
+
+		btnSale = createStyledButton("6. Make a Sale", 50, 270);
+		panel.add(btnSale);
+		btnSale.addActionListener(this);
+
+		btnExportSale = createStyledButton("8. Export Sales", 50, 330);
+		panel.add(btnExportSale);
+		btnExportSale.addActionListener(this);
+
+		// Buttons on the left
+		btnCashCount = createStyledButton("1. Cash Count", 330, 150);
+		panel.add(btnCashCount);
+		btnCashCount.addActionListener(this);
+
+		btnAddStock = createStyledButton("3. Update Stock", 330, 210);
+		panel.add(btnAddStock);
+		btnAddStock.addActionListener(this);
+
+		btnShowInventory = createStyledButton("5. Show Inventory", 330, 270);
+		panel.add(btnShowInventory);
+		btnShowInventory.addActionListener(this);
+
+		btnListSale = createStyledButton("7. Show Sales", 330, 330);
+		panel.add(btnListSale);
+		btnListSale.addActionListener(this);
+
+		// Buttons on the center
+		btnDeleteProduct = createStyledButton("9. Delete Product", 190, 390);
+		panel.add(btnDeleteProduct);
+		btnDeleteProduct.addActionListener(this);
+	}
+
+	private JButton createStyledButton(String text, int x, int y) {
+		JButton button = new JButton(text);
+		button.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		button.setBounds(x, y, 220, 50);
+		button.setBackground(new Color(76, 175, 80));
+		button.setForeground(Color.WHITE);
+		button.setFocusPainted(false);
+		button.setBorder(BorderFactory.createLineBorder(new Color(46, 125, 50), 2));
+		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		return button;
 	}
 
 	private void openCashView(int option) {
@@ -193,7 +218,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		view.setVisible(true);
 	}
 
-	private void exportInventory() {
+	private void exportInventory(int option) {
 		boolean fileExport = shop.writeInventory();
 
 		if (fileExport) {
@@ -202,13 +227,39 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		} else {
 			JOptionPane.showMessageDialog(this, "Error Exporting Inventory", "Error", JOptionPane.ERROR_MESSAGE);
 		}
+		this.requestFocusInWindow();
+	}
+
+	private void openSale(int option) {
+		SaleView view = new SaleView(shop);
+		view.setLocation(getX() + getWidth() / 2, getY() + 50);
+		view.setVisible(true);
+	}
+
+	public void openListSale(int option) {
+		SalesListView view = new SalesListView(shop);
+		view.setLocation(getX() + getWidth() / 2, getY() + 50);
+		view.setVisible(true);
+	}
+
+	public void exportSale(int option) {
+		boolean isExport = shop.exportSales();
+
+		if (isExport) {
+			JOptionPane.showMessageDialog(this, "Sales Successfully Exported", "Information",
+					JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(this, "Error Exporting Sales", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		this.requestFocusInWindow();
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == btnExportProduct) {
-			exportInventory();
+			exportInventory(Constants.EXPORT_INVENTORY);
 		}
 		// If the user clicks on the btnCashCount button, call the openCashView method
 		// with Constants.SHOW_CASH parameter
@@ -235,6 +286,18 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		if (e.getSource() == btnDeleteProduct) {
 			openProductView(Constants.DELETE_PRODUCT);
 		}
+		if (e.getSource() == btnSale) {
+			openSale(Constants.MAKE_SALE);
+		}
+
+		if (e.getSource() == btnListSale) {
+			openListSale(Constants.SHOW_SALE);
+		}
+
+		if (e.getSource() == btnExportSale) {
+			exportSale(Constants.EXPORT_SALE);
+		}
+
 	}
 
 	@Override
@@ -251,7 +314,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 		// user
 		switch (key) {
 		case KeyEvent.VK_0:
-			exportInventory();
+			exportInventory(Constants.EXPORT_INVENTORY);
 			break;
 		case KeyEvent.VK_1:
 			openCashView(Constants.SHOW_CASH);
@@ -264,6 +327,15 @@ public class ShopView extends JFrame implements ActionListener, KeyListener {
 			break;
 		case KeyEvent.VK_5:
 			openInventoryView(Constants.SHOW_INVENTORY);
+			break;
+		case KeyEvent.VK_6:
+			openSale(Constants.MAKE_SALE);
+			break;
+		case KeyEvent.VK_7:
+			openListSale(Constants.SHOW_SALE);
+			break;
+		case KeyEvent.VK_8:
+			exportSale(Constants.EXPORT_SALE);
 			break;
 		case KeyEvent.VK_9:
 			openProductView(Constants.DELETE_PRODUCT);

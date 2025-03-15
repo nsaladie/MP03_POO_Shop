@@ -5,8 +5,7 @@ import view.LoginView;
 
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 import dao.*;
 
@@ -23,7 +22,9 @@ public class Shop {
 	// Connection using JDBC
 	// private Dao dao = new DaoImplJDBC();
 	// Connection using Hibernate
-	private Dao dao = new DaoImplHibernate();
+	// private Dao dao = new DaoImplHibernate();
+	// Connection using MongoDB
+	private Dao dao = new DaoImplMongoDB();
 	private static Shop shop = new Shop();
 
 	final static double TAX_RATE = 1.04;
@@ -535,6 +536,10 @@ public class Shop {
 		return inventory;
 	}
 
+	public ArrayList<Sale> getSales() {
+		return sales;
+	}
+
 	public void setInventory(ArrayList<Product> product) {
 		this.inventory = product;
 	}
@@ -552,6 +557,47 @@ public class Shop {
 		}
 		return null;
 
+	}
+
+	/**
+	 * Make a Sale
+	 * 
+	 * @param client          String
+	 * @param productSelected ArrayList
+	 */
+	public boolean makeSale(String client, ArrayList<Product> productSelected) {
+		LocalDateTime date = LocalDateTime.now();
+		double totalPrice = 0.0;
+
+		for (Product product : productSelected) {
+			if (product.getStock() <= 0)
+				return false;
+			else
+				product.setStock(product.getStock() - 1);
+
+			totalPrice += product.getPublicPrice().getValue();
+		}
+
+		try {
+			sales.add(new Sale(client, productSelected, totalPrice, date));
+			return true;
+		} catch (Exception e) {
+			System.err.println(e);
+			return false;
+		}
+
+	}
+
+	public boolean exportSales() {
+		boolean isExport = false;
+		try {
+			dao.connect();
+			isExport = dao.writeSales(sales);
+			dao.disconnect();
+		} catch (Exception e) {
+			System.err.println(e);
+		}
+		return isExport;
 	}
 
 	private void createProduct(Product product) {

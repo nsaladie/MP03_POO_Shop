@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import model.Employee;
 import model.Product;
+import model.Sale;
 
 public interface Dao {
 	public void connect();
@@ -22,4 +23,5 @@ public interface Dao {
 	
 	public void deleteProduct(Product product);
 
+	public boolean writeSales(ArrayList<Sale> sales);
 }

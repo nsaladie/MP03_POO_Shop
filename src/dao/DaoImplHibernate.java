@@ -16,6 +16,7 @@ import org.hibernate.Transaction;
 import model.Employee;
 import model.Product;
 import model.ProductHistory;
+import model.Sale;
 
 public class DaoImplHibernate implements Dao {
 
@@ -141,5 +142,11 @@ public class DaoImplHibernate implements Dao {
 		} finally {
 			disconnect();
 		}
+	}
+
+	@Override
+	public boolean writeSales(ArrayList<Sale> sales) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

@@ -16,6 +16,9 @@ public class ProductView extends JDialog implements ActionListener {
 	private JTextField nameProduct;
 	private JTextField stockProduct;
 	private JTextField priceProduct;
+	private JLabel lblPrice;
+	private JLabel lblName;
+	private JLabel lblStock;
 	private JButton btnBack;
 	private JButton btnOk;
 	private int option;
@@ -23,23 +26,13 @@ public class ProductView extends JDialog implements ActionListener {
 	private JLabel lblSymbol_1;
 	private JLabel lblSymbol_2;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-
 			public void run() {
 			}
 		});
 	}
 
-	/**
-	 * Create the dialog.
-	 * 
-	 * @param option
-	 * @param shop
-	 */
 	public ProductView(Shop shop, int option) {
 		this.shop = shop;
 		this.option = option;
@@ -47,7 +40,8 @@ public class ProductView extends JDialog implements ActionListener {
 	}
 
 	private void initializeUI() {
-		setBounds(100, 100, 425, 450);
+		setBounds(100, 100, 450, 500);
+		setResizable(false);
 		getContentPane().setLayout(new BorderLayout());
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		JPanel contentPanel = createContentPanel();
@@ -58,119 +52,132 @@ public class ProductView extends JDialog implements ActionListener {
 
 	private JPanel createContentPanel() {
 		contentPanel = new JPanel();
-		contentPanel.setBackground(Color.DARK_GRAY);
+		contentPanel.setBackground(new Color(45, 45, 45));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPanel.setLayout(null);
 		return contentPanel;
 	}
 
 	private void setupLabelsAndFields() {
-		panel = new JPanel();
-		panel.setBounds(39, 37, 331, 349);
+		panel = new JPanel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setColor(Color.WHITE);
+				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+			}
+		};
+		panel.setBounds(35, 30, 360, 400);
+		panel.setOpaque(false);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 
 		JLabel lblProduct = new JLabel("PRODUCT");
 		lblProduct.setHorizontalAlignment(SwingConstants.CENTER);
-		lblProduct.setFont(new Font("SansSerif", Font.BOLD, 25));
-		lblProduct.setBounds(0, 10, 331, 31);
+		lblProduct.setFont(new Font("SansSerif", Font.BOLD, 28));
+		lblProduct.setForeground(new Color(45, 45, 45));
+		lblProduct.setBounds(0, 10, 360, 35);
 		panel.add(lblProduct);
 
-		JLabel lblNameProduct = new JLabel("Product Name");
-		lblNameProduct.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNameProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblNameProduct.setBounds(21, 100, 130, 30);
-		panel.add(lblNameProduct);
+		lblName = createStyledLabel("Product Name", 30, 80);
+		panel.add(lblName);
 
-		nameProduct = new JTextField();
-		nameProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		nameProduct.setBounds(165, 100, 144, 30);
+		nameProduct = createStyledTextField(180, 80);
 		panel.add(nameProduct);
-		nameProduct.setColumns(10);
 
-		JLabel lblStockProduct = new JLabel("Product Stock");
-		lblStockProduct.setHorizontalAlignment(SwingConstants.CENTER);
-		lblStockProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblStockProduct.setBounds(21, 155, 130, 30);
-		panel.add(lblStockProduct);
+		lblStock = createStyledLabel("Product Stock", 30, 140);
+		panel.add(lblStock);
 
-		stockProduct = new JTextField();
-		stockProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		stockProduct.setColumns(10);
-		stockProduct.setBounds(165, 155, 144, 30);
+		stockProduct = createStyledTextField(180, 140);
 		panel.add(stockProduct);
 
-		JLabel lblPriceProduct = new JLabel("Product Price");
-		lblPriceProduct.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPriceProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblPriceProduct.setBounds(21, 208, 130, 30);
-		panel.add(lblPriceProduct);
+		lblPrice = createStyledLabel("Product Price", 30, 200);
+		panel.add(lblPrice);
 
-		priceProduct = new JTextField();
-		priceProduct.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		priceProduct.setColumns(10);
-		priceProduct.setBounds(165, 208, 144, 30);
+		priceProduct = createStyledTextField(180, 200);
 		panel.add(priceProduct);
 
-		btnOk = new JButton("Ok");
-		btnOk.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnOk.setBounds(40, 286, 104, 31);
-		btnOk.addActionListener(this);
+		btnOk = createStyledButton("Ok", new Color(76, 175, 80), 50, 300);
 		panel.add(btnOk);
 
-		btnBack = new JButton("Back");
-		btnBack.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnBack.setBounds(187, 286, 104, 31);
-		btnBack.addActionListener(this);
+		btnBack = createStyledButton("Back", new Color(244, 67, 54), 190, 300);
 		panel.add(btnBack);
 
-		JLabel lblSymbol = new JLabel("*");
-		lblSymbol.setForeground(Color.RED);
-		lblSymbol.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSymbol.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblSymbol.setBounds(143, 105, 22, 21);
+		JLabel lblSymbol = createRedAsterisk(160, 80);
 		panel.add(lblSymbol);
 
-		lblSymbol_1 = new JLabel("*");
-		lblSymbol_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSymbol_1.setForeground(Color.RED);
-		lblSymbol_1.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblSymbol_1.setBounds(143, 160, 22, 21);
+		lblSymbol_1 = createRedAsterisk(160, 140);
 		panel.add(lblSymbol_1);
 
-		lblSymbol_2 = new JLabel("*");
-		lblSymbol_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSymbol_2.setForeground(Color.RED);
-		lblSymbol_2.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblSymbol_2.setBounds(143, 213, 22, 21);
+		lblSymbol_2 = createRedAsterisk(160, 200);
 		panel.add(lblSymbol_2);
 
-		// Depending the option that was pass in ShopView hides the labels and inputs
-		// and put a correct title
+		adjustViewByOption();
+	}
+
+	private JLabel createStyledLabel(String text, int x, int y) {
+		JLabel label = new JLabel(text);
+		label.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		label.setForeground(new Color(80, 80, 80));
+		label.setBounds(x, y, 130, 30);
+		return label;
+	}
+
+	private JTextField createStyledTextField(int x, int y) {
+		JTextField textField = new JTextField();
+		textField.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		textField.setBounds(x, y, 150, 30);
+		textField.setBackground(new Color(245, 245, 245));
+		textField.setForeground(Color.DARK_GRAY);
+		textField.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+		return textField;
+	}
+
+	private JButton createStyledButton(String text, Color color, int x, int y) {
+		JButton button = new JButton(text);
+		button.setFont(new Font("SansSerif", Font.BOLD, 16));
+		button.setBounds(x, y, 100, 40);
+		button.setBackground(color);
+		button.setForeground(Color.WHITE);
+		button.setFocusPainted(false);
+		button.setBorder(BorderFactory.createEmptyBorder());
+		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		button.addActionListener(this);
+		return button;
+	}
+
+	private JLabel createRedAsterisk(int x, int y) {
+		JLabel label = new JLabel("*");
+		label.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		label.setForeground(Color.RED);
+		label.setBounds(x, y, 20, 20);
+		return label;
+	}
+
+	private void adjustViewByOption() {
 		switch (this.option) {
-		case 2:
-			// Put a title to the dialog
+		case 2: // Add Product
 			setTitle("Add Product");
 			break;
-		case 3:
-			// Put a title to the dialog
+		case 3: // Update Stock
 			setTitle("Update Stock");
-			// Hides the label and input of price
-			lblPriceProduct.setVisible(false);
+			priceProduct.setVisible(false);
+			lblPrice.setVisible(false);
+			lblSymbol_2.setVisible(false);
+			break;
+		case 9: // Delete Product
+			setTitle("Delete Product");
+			lblStock.setVisible(false);
+			stockProduct.setVisible(false);
+			lblSymbol_1.setVisible(false);
+			lblPrice.setVisible(false);
 			priceProduct.setVisible(false);
 			lblSymbol_2.setVisible(false);
 			break;
-		case 9:
-			// Put a title to the dialog
-			setTitle("Delete Product");
-			// Hides the label and inputs of stock and price
-			lblStockProduct.setVisible(false);
-			stockProduct.setVisible(false);
-			lblPriceProduct.setVisible(false);
-			priceProduct.setVisible(false);
-			lblSymbol_1.setVisible(false);
-			lblSymbol_2.setVisible(false);
-
 		}
 	}
 
@@ -195,6 +202,7 @@ public class ProductView extends JDialog implements ActionListener {
 			Product exist = shop.findProduct(name);
 			// Check if the product send by the user not exist
 			if (exist == null) {
+				name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
 				// Add the new product to the shop
 				shop.addProduct(new Product(name, wholesalerPrice, true, productStock));
 				JOptionPane.showMessageDialog(this, "New product successfully created", "Create Product",

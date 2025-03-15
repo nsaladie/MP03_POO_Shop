@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import model.Employee;
 import model.Product;
+import model.Sale;
 
 public class DaoImplJDBC implements Dao {
 
@@ -164,6 +165,12 @@ public class DaoImplJDBC implements Dao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public boolean writeSales(ArrayList<Sale> sales) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

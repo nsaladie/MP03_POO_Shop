@@ -6,6 +6,7 @@ import dao.jaxb.JaxbMarshaller;
 import dao.jaxb.JaxbUnMarshaller;
 import model.Employee;
 import model.Product;
+import model.Sale;
 
 public class DaoImplJaxb implements Dao {
 
@@ -54,6 +55,12 @@ public class DaoImplJaxb implements Dao {
 	@Override
 	public void deleteProduct(Product product) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public boolean writeSales(ArrayList<Sale> sales) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

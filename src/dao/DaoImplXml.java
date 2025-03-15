@@ -26,6 +26,7 @@ import dao.xml.DomWriter;
 import dao.xml.SaxReader;
 import model.Employee;
 import model.Product;
+import model.Sale;
 
 public class DaoImplXml implements Dao {
 
@@ -95,6 +96,12 @@ public class DaoImplXml implements Dao {
 	@Override
 	public void deleteProduct(Product product) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public boolean writeSales(ArrayList<Sale> sales) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

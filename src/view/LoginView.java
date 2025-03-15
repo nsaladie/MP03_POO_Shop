@@ -2,11 +2,11 @@ package view;
 
 import exception.LimitLoginException;
 import main.Shop;
+import model.Employee;
 import util.Constants;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import model.Employee;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -19,20 +19,15 @@ public class LoginView extends JFrame implements ActionListener {
 	private JButton btnLogin;
 	private JButton btnReset;
 	private int loginAttempts = 0;
-	private JLabel lblSymbol;
-	private JLabel lblSymbol2;
 	private static Shop shop;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					LoginView frame = new LoginView(shop);
 					frame.setVisible(true);
-					frame.setTitle("Login");
+					frame.setTitle("Login - MiTienda");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -40,98 +35,108 @@ public class LoginView extends JFrame implements ActionListener {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public LoginView(Shop shop) {
-		this.shop = shop;
-		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 600, 560);
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		// Displays the shopView sale in the middle of the computer screen.
-		setLocation(dim.width / 2 - getSize().width / 2, dim.height / 2 - getSize().height / 2);
-		contentPane = new JPanel();
-		contentPane.setBackground(Color.DARK_GRAY);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		LoginView.shop = shop;
 
+		initializeLoginUI();
+	}
+
+	private void initializeLoginUI() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 500, 500);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation(dim.width / 2 - getSize().width / 2, dim.height / 2 - getSize().height / 2);
+		setResizable(false);
+		setTitle("Login - MiTienda");
+
+		contentPane = new JPanel();
+		contentPane.setBackground(new Color(45, 45, 45));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.WHITE);
-		panel.setBounds(112, 45, 350, 400);
+		JPanel panel = new JPanel() {
+			private static final long serialVersionUID = 3902294183291571225L;
+
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setColor(Color.WHITE);
+				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+			}
+		};
+		panel.setBounds(40, 40, 400, 400);
+		panel.setOpaque(false);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-		JLabel Login = new JLabel("Login");
-		Login.setHorizontalAlignment(SwingConstants.LEFT);
-		Login.setFont(new Font("SansSerif", Font.BOLD, 30));
-		Login.setBounds(24, 39, 111, 37);
-		panel.add(Login);
+		JLabel lblLoginTitle = new JLabel("Login");
+		lblLoginTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLoginTitle.setFont(new Font("SansSerif", Font.BOLD, 32));
+		lblLoginTitle.setForeground(new Color(50, 50, 50));
+		lblLoginTitle.setBounds(120, 30, 150, 40);
+		panel.add(lblLoginTitle);
 
-		JLabel labelUser = new JLabel("User ID");
-		labelUser.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		labelUser.setBounds(73, 124, 85, 31);
-		panel.add(labelUser);
+		JLabel lblUserID = new JLabel("User ID");
+		lblUserID.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		lblUserID.setForeground(new Color(80, 80, 80));
+		lblUserID.setBounds(50, 110, 100, 25);
+		panel.add(lblUserID);
 
-		JLabel labelPassword = new JLabel("Password");
-		labelPassword.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		labelPassword.setBounds(73, 208, 91, 30);
-		panel.add(labelPassword);
-
-		// Create input userID
 		userID = new JTextField();
-		userID.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		userID.setBounds(73, 167, 213, 31);
+		userID.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		userID.setBounds(50, 140, 300, 35);
+		userID.setBackground(new Color(245, 245, 245));
+		userID.setForeground(Color.DARK_GRAY);
+		userID.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
 		panel.add(userID);
-		userID.setColumns(10);
 
-		// Create input password
+		JLabel lblPassword = new JLabel("Password");
+		lblPassword.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		lblPassword.setForeground(new Color(80, 80, 80));
+		lblPassword.setBounds(50, 190, 100, 25);
+		panel.add(lblPassword);
+
 		passwordField = new JPasswordField();
-		passwordField.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		passwordField.setBounds(73, 248, 213, 30);
+		passwordField.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		passwordField.setBounds(50, 220, 300, 35);
+		passwordField.setBackground(new Color(245, 245, 245));
+		passwordField.setForeground(Color.DARK_GRAY);
+		passwordField.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
 		panel.add(passwordField);
 
-		btnLogin = new JButton("Login");
-		btnLogin.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnLogin.setBounds(73, 329, 91, 31);
+		btnLogin = createStyledButton("Login", new Color(76, 175, 80), 50, 300);
 		btnLogin.addActionListener(this);
 		panel.add(btnLogin);
 
-		btnReset = new JButton("Reset");
-		btnReset.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		btnReset.setBounds(201, 329, 91, 31);
+		btnReset = createStyledButton("Reset", new Color(244, 67, 54), 210, 300);
 		btnReset.addActionListener(this);
 		panel.add(btnReset);
-
-		lblSymbol = new JLabel("*");
-		lblSymbol.setForeground(Color.RED);
-		lblSymbol.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblSymbol.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSymbol.setBounds(139, 124, 21, 26);
-		panel.add(lblSymbol);
-
-		lblSymbol2 = new JLabel("*");
-		lblSymbol2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSymbol2.setForeground(Color.RED);
-		lblSymbol2.setFont(new Font("SansSerif", Font.PLAIN, 20));
-		lblSymbol2.setBounds(160, 208, 21, 26);
-		panel.add(lblSymbol2);
-
 	}
 
-	private void initialSesion() {
-		// Create a new instance of the Employee class
+	private JButton createStyledButton(String text, Color backgroundColor, int x, int y) {
+		JButton button = new JButton(text);
+		button.setFont(new Font("SansSerif", Font.BOLD, 16));
+		button.setBounds(x, y, 120, 40);
+		button.setBackground(backgroundColor);
+		button.setForeground(Color.WHITE);
+		button.setFocusPainted(false);
+		button.setBorder(BorderFactory.createEmptyBorder());
+		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		return button;
+	}
+
+	private void initialSession() {
 		Employee worker = new Employee();
 		boolean isLogin = false;
 
-		// Get data from the UserID JTextField and the passwordField
 		String identificationUser = userID.getText().trim();
 		String password = String.valueOf(passwordField.getPassword()).trim();
 
 		if (identificationUser.isEmpty() || password.isEmpty()) {
-			JOptionPane.showMessageDialog(this, "The userID or password can't be null", "Invalid Type: NULL",
+			JOptionPane.showMessageDialog(this, "User ID or Password cannot be empty.", "Invalid Input",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -142,40 +147,30 @@ public class LoginView extends JFrame implements ActionListener {
 
 			if (loginAttempts < Constants.MAX_LOGIN_ATTEMPTS) {
 				if (isLogin) {
-					// Create a new object of the class ShopView
 					ShopView shopView = new ShopView(shop);
-					// Put visible the view of ShopView
 					shopView.setVisible(true);
-					// Put a title to the view
 					shopView.setTitle("Menu - Shop");
-					// Restore keyboard focus for the shop window
 					shopView.requestFocus();
-					// Close the view of LoginView
 					dispose();
-
 				} else {
 					loginAttempts++;
-					// Report to the user how many attempts are left
 					JOptionPane.showMessageDialog(this, "Incorrect Login. " + loginAttempts + "/"
-							+ Constants.MAX_LOGIN_ATTEMPTS + " attempts left.", "Fail Login",
+							+ Constants.MAX_LOGIN_ATTEMPTS + " attempts left.", "Login Failed",
 							JOptionPane.ERROR_MESSAGE);
-					resetFild();
+					resetFields();
 				}
 			} else {
-				// If the employee has passed the 3 attempts, an exception is triggered.
 				throw new LimitLoginException();
 			}
-
 		} catch (LimitLoginException maxAttempts) {
-			JOptionPane.showMessageDialog(this, maxAttempts.getMessage(), "ERROR: Login", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, maxAttempts.getMessage(), "Login Error", JOptionPane.ERROR_MESSAGE);
 			dispose();
-		} catch (NumberFormatException number) {
-			JOptionPane.showMessageDialog(this, "Invalid UserId format", "Incorrect Type", JOptionPane.ERROR_MESSAGE);
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "Invalid User ID format.", "Input Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
-	public void resetFild() {
-		// Reset the text on userId and password
+	public void resetFields() {
 		userID.setText("");
 		passwordField.setText("");
 	}
@@ -183,11 +178,10 @@ public class LoginView extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnLogin) {
-			initialSesion();
+			initialSession();
 		}
-
 		if (e.getSource() == btnReset) {
-			resetFild();
+			resetFields();
 		}
 	}
 }
